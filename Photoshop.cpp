@@ -157,7 +157,7 @@ void mirrorImage(){
                     image[i][j]=image[i][255-j];
                 }
                 else if (num==3){
-                    // image[j][i]=image[255-j][i];
+                    image[255-i][255-j]=0;
                 }
             }
         }
