@@ -22,7 +22,7 @@ void rotateImage(int angle);
 void Detect_Image_Edges();
 void Shrink_Image();
 void rotateimage2();
-void mirrorImage();
+void mirrorImage(int side);
 void blur();
 
 int main()
@@ -114,12 +114,12 @@ int main()
         break;
 
     case 'a':
-        int num;
+        int side;
         cout << "You're Now Using The Mirror Filter" << endl;
         loadImage();
         cout << "do you want to mirror the \n1.Right half\n2.Left half\n3.Upper half\n4.Lowe half" << endl;
-        cin>>num;
-        mirrorImage();
+        cin>>side;
+        mirrorImage(side);
         saveImage();
         break;
 
@@ -152,23 +152,49 @@ void loadImage()
     readGSBMP(imageFileName, image);
 }
 
-void mirrorImage(){
-    int num;
+void mirrorImage(int side){
+    if (side == 1){
     for (int i=0; i<SIZE; i++){
         for (int j=0; j<SIZE; j++){
             if (j<128){
-                if(num==1){
+
                     image[i][255-j]=image[i][j];
-                }
-                else if(num==2){
-                    image[i][j]=image[i][255-j];
-                }
-                else if (num==3){
-                    image[255-i][255-j]=0;
-                }
+
             }
         }
     }
+    }
+        if (side == 2){
+    for (int i=0; i<SIZE; i++){
+        for (int j=0; j<SIZE; j++){
+            if (j<128){
+
+                    image[i][j]=image[i][255-j];
+            }
+        }
+    }
+    }
+            if (side == 3){
+    for (int i=0; i<SIZE; i++){
+        for (int j=0; j<SIZE; j++){
+            if (j<128){
+
+               image[j][i]= image[255 - j][i];
+               }
+        }
+    }
+    }
+                if (side == 4){
+    for (int i=0; i<SIZE; i++){
+        for (int j=0; j<SIZE; j++){
+            if (j<128){
+
+              image[255 - j][i] = image[j][i];
+               }
+        }
+    }
+    }
+
 }
 
 void rotateimage2(){
