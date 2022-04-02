@@ -21,6 +21,7 @@ void Darken_Lighten();
 void rotateImage(int angle);
 void Detect_Image_Edges();
 void Shrink_Image();
+void rotateimage2();
 
 int main()
 {
@@ -84,6 +85,7 @@ int main()
         cout << "Please Choose the angle (90 - 180 - 270):  ";
         cin >> angle;
         rotateImage(angle);
+        // rotateimage2();
         saveImage();
         break;
 
@@ -130,6 +132,25 @@ void loadImage()
     // Add to it .bmp extension and load image
     strcat(imageFileName, ".bmp");
     readGSBMP(imageFileName, image);
+}
+
+void rotateimage2(){
+    for (int i = 0; i < SIZE; i++){
+        for (int j=0; j<SIZE; j++){
+            image[i][j]=image[j][255-i];
+            // image[j][255-i]=image[255-i][255-j];
+            // image[i][j]=image[i][255-j];
+            // image[i][255-j]=image[255-i][255-j];
+            // image[255-i][255-j]=image[255-i][j];
+        }
+    }
+    // for (int i=0; i<SIZE; i++){
+    //     for (int j=0; j<SIZE; j++){
+    //         if (i<128){
+    //             image[j][i]=image[j][255-i];
+    //         }
+    //     }
+    // }
 }
 
 // void loadAnother(){
