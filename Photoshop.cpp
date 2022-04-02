@@ -23,6 +23,7 @@ void Detect_Image_Edges();
 void Shrink_Image();
 void rotateimage2();
 void mirrorImage();
+void blur();
 
 int main()
 {
@@ -122,11 +123,17 @@ int main()
         saveImage();
         break;
 
-        
+
 
         // case'b':
 
-        // case'c':
+        case'c':
+        cout << "You're Now Using The Blur Filter" << endl;
+        loadImage();
+        blur();
+        saveImage();
+
+
 
         // case's':
     }
@@ -534,4 +541,48 @@ void Shrink_Image()
             }
         }
     }
+}
+
+
+
+void blur(){
+unsigned char space[258][258];
+long avg;
+        for (int i = 0; i < SIZE; ++i){
+            for (int j = 0; j < SIZE; ++j){
+                    avg += image[i][j];
+            }
+        }
+
+        avg /= SIZE*SIZE;
+
+        for (int i = 0; i < 258; ++i){
+            for (int j = 0; j < 258; ++j){
+                space[i][j] = avg;
+
+            }
+        }
+        for (int i = 1; i < 258; ++i){
+            for (int j = 1; j < 258; ++j){
+
+                space[i][j] = image[i-1][j-1];
+            }
+            }
+
+        for (int i = 1; i < 258; ++i){
+            for (int j = 1; j < 258; ++j){
+            int kernel;
+            kernel = space[i-1][j-1] + space[i-1][j] + space[i-1][j+1] + space[i][j-1] + space[i][j] + space[i][j+1] + space[i+1][j-1] + space[i+1][j] + space[i][j+1];
+            kernel /= 9;
+            space[i][j] = kernel;
+
+            }
+        }
+        for (int i = 1; i < 258; ++i){
+            for (int j = 1; j < 258; ++j){
+
+                 image[i-1][j-1] = space[i][j];
+            }
+            }
+
 }
