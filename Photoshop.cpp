@@ -24,6 +24,7 @@ void Shrink_Image();
 void rotateimage2();
 void mirrorImage(int side);
 void blur();
+void EnlargeImage(int quarter);
 
 int main()
 {
@@ -98,8 +99,16 @@ int main()
         saveImage();
         break;
 
-        // case'8':
-
+    case '8':
+        int quarter;
+        cout << "You're Now Using The Enlarge Filter" << endl;
+        loadImage();
+        cout << "pls choose the quarter you want to enlarge\n1.first quarter\n2.second quarter\n3.third quarter\n4.fourth quarter"<<endl;
+        cin>>quarter;
+        EnlargeImage(quarter);
+        saveImage();
+        break;
+    
     case '9':
         int temp1;
         cout << "You're Now Using The Shrink Filter" << endl;
@@ -152,69 +161,98 @@ void loadImage()
     readGSBMP(imageFileName, image);
 }
 
+void EnlargeImage(int quarter){
+    if (quarter==1){
+        for (int i=0; (i<SIZE/2); i++){
+            for (int j=0; j<(SIZE/2); j++){
+                int pixel=image[i][j];
+                secondImage[i+i][j+j]=pixel;
+                secondImage[i+i][j+j+1]=pixel;
+                secondImage[i+i+1][j+j]=pixel;
+                secondImage[i+i+1][j+j+1]=pixel;
+            }
+        }
+    }
+    else if (quarter==2){
+        for (int i=0; i<(SIZE/2); i++){
+            for (int j=127; j<SIZE; j++){
+                int pixel=image[i][j];
+                secondImage[i+i][j+j]=pixel;
+                secondImage[i+i][j+j+1]=pixel;
+                secondImage[i+i+1][j+j]=pixel;
+                secondImage[i+i+1][j+j+1]=pixel;
+            }
+        }
+    }
+    else if (quarter==3){
+        for (int i=127; i<SIZE; i++){
+            for (int j=0; j<(SIZE/2); j++){
+                int pixel=image[i][j];
+                secondImage[i*2-127*2][j+j]=pixel;
+                secondImage[i*2-127*2][j+j+1]=pixel;
+                secondImage[i*2-127*2+1][j+j]=pixel;
+                secondImage[i*2-127*2+1][j+j+1]=pixel;
+            }
+        }
+    }
+    else if (quarter==4){
+        for (int i=127; i<SIZE; i++){
+            for (int j=127; j<SIZE; j++){
+                int pixel=image[i][j];
+                secondImage[i*2-127*2][j*2-127*2]=pixel;
+                secondImage[i*2-127*2][j*2-127*2+1]=pixel;
+                secondImage[i*2-127*2+1][j*2-127*2]=pixel;
+                secondImage[i*2-127*2+1][j*2-127*2+1]=pixel; 
+            }
+        }
+    }
+    for (int i=0; i<SIZE; i++){
+        for (int j=0; j<SIZE; j++){
+            image[i][j]=secondImage[i][j];
+        }
+    }
+}
+
+
 void mirrorImage(int side){
     if (side == 1){
-    for (int i=0; i<SIZE; i++){
-        for (int j=0; j<SIZE; j++){
-            if (j<128){
-
-                    image[i][255-j]=image[i][j];
-
-            }
-        }
-    }
-    }
-        if (side == 2){
-    for (int i=0; i<SIZE; i++){
-        for (int j=0; j<SIZE; j++){
-            if (j<128){
-
+        for (int i=0; i<SIZE; i++){
+            for (int j=0; j<SIZE; j++){
+                if (j<128){
                     image[i][j]=image[i][255-j];
+                }
             }
         }
     }
-    }
-            if (side == 3){
-    for (int i=0; i<SIZE; i++){
-        for (int j=0; j<SIZE; j++){
-            if (j<128){
-
-               image[j][i]= image[255 - j][i];
-               }
+    if (side == 2){
+        for (int i=0; i<SIZE; i++){
+            for (int j=0; j<SIZE; j++){
+                if (j<128){
+                    image[i][255-j]=image[i][j];
+                }
+            }
         }
     }
-    }
-                if (side == 4){
-    for (int i=0; i<SIZE; i++){
-        for (int j=0; j<SIZE; j++){
-            if (j<128){
-
-              image[255 - j][i] = image[j][i];
-               }
+    if (side == 3){
+        for (int i=0; i<SIZE; i++){
+            for (int j=0; j<SIZE; j++){
+                if (j<128){
+                image[255 - j][i] = image[j][i];
+                }
+            }
         }
     }
+    if (side == 4){
+        for (int i=0; i<SIZE; i++){
+            for (int j=0; j<SIZE; j++){
+                if (j<128){
+                image[j][i]= image[255 - j][i];
+                }
+            }
+        }
     }
-
 }
 
-void rotateimage2(){
-    for (int i = 0; i < SIZE; i++){
-        for (int j=0; j<SIZE; j++){
-            image[i][j]=image[j][255-i];
-            // image[j][255-i]=image[255-i][255-j];
-            // image[i][j]=image[i][255-j];
-            // image[i][255-j]=image[255-i][255-j];
-            // image[255-i][255-j]=image[255-i][j];
-        }
-    }
-    // for (int i=0; i<SIZE; i++){
-    //     for (int j=0; j<SIZE; j++){
-    //         if (i<128){
-    //             image[j][i]=image[j][255-i];
-    //         }
-    //     }
-    // }
-}
 
 // void loadAnother(){
 
