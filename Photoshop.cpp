@@ -132,7 +132,7 @@ int main()
             break;
 
         case 'l':
-            cout << "u can choose another image after save and apply filters on it" << endl;
+            cout << "u can load another image and apply filters on it after save the first" << endl;
             loadImage();
             break;
 
