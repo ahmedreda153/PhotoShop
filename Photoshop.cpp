@@ -24,6 +24,7 @@ void blackWhite();
 void invert();
 void mergeImages();
 void flip(char choice);
+void flipImage2();
 void darkenLighten(char character);
 void rotateImage(int angle);
 void detectImageEdges();
@@ -65,6 +66,7 @@ int main()
             cout << "Do you want to Flip (h)orizontally or (v)ertically ? ";
             cin >> flipChoice;
             flip(flipChoice);
+            // flipImage2();
             break;
 
         case '5':
@@ -761,4 +763,17 @@ void blur()
             image[i - 1][j - 1] = space[i][j];
         }
     }
+}
+
+void flipImage2(){
+    for (int i = 0; i < SIZE; i++){
+        for(int j = 0; j < SIZE; j++){
+            image[i][j]=secondImage[255-i][j];
+        }
+    }
+    for (int i = 0; i < SIZE; i++){
+        for(int j = 0; j < SIZE; j++){
+            image[i][j]=secondImage[i][j];
+        }
+    }  
 }
