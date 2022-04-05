@@ -24,7 +24,7 @@ void blackWhite();
 void invert();
 void mergeImages();
 void flip(char choice);
-void flipImage2();
+void flipImage();
 void darkenLighten(char character);
 void rotateImage(int angle);
 void detectImageEdges();
@@ -61,12 +61,12 @@ int main()
             break;
 
         case '4':
-            char flipChoice;
+            // char flipChoice;
             cout << "You're Now Using The Flip Filter" << endl;
-            cout << "Do you want to Flip (h)orizontally or (v)ertically ? ";
-            cin >> flipChoice;
-            flip(flipChoice);
-            // flipImage2();
+            // cout << "Do you want to Flip (h)orizontally or (v)ertically ? ";
+            // cin >> flipChoice;
+            // flip(flipChoice);
+            flipImage();
             break;
 
         case '5':
@@ -765,15 +765,36 @@ void blur()
     }
 }
 
-void flipImage2(){
-    for (int i = 0; i < SIZE; i++){
-        for(int j = 0; j < SIZE; j++){
-            image[i][j]=secondImage[255-i][j];
+void flipImage()
+{
+    int choice;
+    cout << "do yo want to flip the photo \n1.horizontal\n2.vertical\n";
+    cin >> choice;
+    if (choice == 1)
+    {
+        for (int i = 0; i < SIZE; i++)
+        {
+            for (int j = 0; j < SIZE; j++)
+            {
+                secondImage[i][j] = image[255 - i][j];
+            }
         }
     }
-    for (int i = 0; i < SIZE; i++){
-        for(int j = 0; j < SIZE; j++){
-            image[i][j]=secondImage[i][j];
+    else
+    {
+        for (int i = 0; i < SIZE; i++)
+        {
+            for (int j = 0; j < SIZE; j++)
+            {
+                secondImage[j][i] = image[j][255 - i];
+            }
         }
-    }  
+    }
+    for (int i = 0; i < SIZE; i++)
+    {
+        for (int j = 0; j < SIZE; j++)
+        {
+            image[i][j] = secondImage[i][j];
+        }
+    }
 }
