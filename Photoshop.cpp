@@ -24,11 +24,11 @@ void blackWhite();
 void invert();
 void mergeImages();
 void flipImage();
-void darkenLighten(char character);
-void rotateImage(int angle);
+void darkenLighten();
+void rotateImage();
 void detectImageEdges();
 void enlargeImage();
-void shrinkImage(int dimension);
+void shrinkImage();
 void mirrorImage();
 void shuffleImage();
 void blur();
@@ -65,21 +65,13 @@ int main()
             break;
 
         case '5':
-            char character;
             cout << "You're Now Using The Darken and Lighten Filter" << endl;
-            cout << "choose (d) if u want to darken the image" << endl;
-            cout << "choose (l) if u want to lighten the image" << endl;
-            cout << "choose: ";
-            cin >> character;
-            darkenLighten(character);
+            darkenLighten();
             break;
 
         case '6':
-            int angle;
             cout << "You're Now Using The rotate Filter" << endl;
-            cout << "Please Choose the angle (90 - 180 - 270):  ";
-            cin >> angle;
-            rotateImage(angle);
+            rotateImage();
             break;
 
         case '7':
@@ -93,11 +85,8 @@ int main()
             break;
 
         case '9':
-            int dimension;
             cout << "You're Now Using The Shrink Filter" << endl;
-            cout << "please choose the dimension (1/2 - 1/3 - 1/4): ";
-            cin >> dimension;
-            shrinkImage(dimension);
+            shrinkImage();
             break;
 
         case 'a':
@@ -161,11 +150,11 @@ void saveImage()
 void displayMenu()
 {
     cout << "\n1-Black & White Filter\n2-Invert Filter\n3-Merge Filter\n4-Flip Image\n5-Darken and Lighten Image\n6-rotate Image\n7-Detect Image Edges\n8-Enlarge Image" << endl;
-    cout << "9-Shrink Image\na-Miror 1/2 Image\nb-Shuffle Image\nc-Blur Image\ns-Save The Image to a File\nl-Load another image after save the first\n0-Exit" << endl;
+    cout << "9-Shrink Image\na-Mirror 1/2 Image\nb-Shuffle Image\nc-Blur Image\ns-Save The Image to a File\nl-Load another image after save the first\n0-Exit" << endl;
     cout << "\nPlease select a filter to apply or 0 to exit the program: ";
 }
 
-void blackWhite()
+void blackWhite()//make each pixel in the image black or white
 {
     long avg = 0;
 
@@ -178,7 +167,7 @@ void blackWhite()
         }
     }
 
-    avg /= (SIZE * SIZE);
+    avg /= (SIZE * SIZE);//to calculate the avrage colour of the image
 
     cout << "The Average is: " << avg << endl;
 
@@ -187,12 +176,12 @@ void blackWhite()
         for (int j = 0; j < SIZE; j++)
         {
 
-            if (image[i][j] > avg)
+            if (image[i][j] > avg)//if pixel colour greater than avg make this pixel white
             {
 
                 image[i][j] = 255;
             }
-            else
+            else//else make it black
             {
 
                 image[i][j] = 0;
@@ -219,7 +208,7 @@ void mergeImages()
     {
         for (int j = 0; j < SIZE; j++)
         {
-            secondImage[i][j] = image[i][j];
+            secondImage[i][j] = image[i][j];//store each pixel in second image to loud another image in the original image
         }
     }
     cout << "Enter the name of the second photo without (.bmp) ";
@@ -228,21 +217,27 @@ void mergeImages()
     {
         for (int j = 0; j < SIZE; j++)
         {
-            image[i][j] = (secondImage[i][j] + image[i][j]) / 2;
+            image[i][j] = (secondImage[i][j] + image[i][j]) / 2;//calculate the sum of 1 pixel from image1 and 1 pixel from image2 and divide it by 2
         }
     }
 }
 
 
-void darkenLighten(char character)
+void darkenLighten()
 {
+    char character;
+    cout << "choose (d) if u want to darken the image" << endl;
+    cout << "choose (l) if u want to lighten the image" << endl;
+    cout << "choose: ";
+    cin >> character;
+
     if (character == 'd')
     {
         for (int i = 0; i < SIZE; i++)
         {
             for (int j = 0; j < SIZE; j++)
             {
-                image[i][j] = image[i][j] / 2;
+                image[i][j] = image[i][j] / 2; //to darken the image make the colour of each pixel = 1/2 the original colour of this pixel
             }
         }
     }
@@ -258,29 +253,33 @@ void darkenLighten(char character)
                 }
                 else
                 {
-                    image[i][j] = image[i][j] + (image[i][j] / 2);
+                    image[i][j] = image[i][j] + (image[i][j] / 2); //to lighten the image make the colour of each pixel = the original colour + 1/2 the original colour
                 }
             }
         }
     }
 }
 
-void rotateImage(int angle)
+void rotateImage()
 {
+    int angle;
+    cout << "Please Choose the angle (90 - 180 - 270):  ";
+    cin >> angle;
+
     if (angle == 90)
     {
         for (int i = 0; i < SIZE; ++i)
         {
             for (int j = 0; j < SIZE; ++j)
             {
-                secondImage[j][255 - i] = image[i][j];
+                secondImage[j][255 - i] = image[i][j];//to rotate the image 90 degree store the first row in the original image to the last coloumn in the second image
             }
         }
         for (int i = 0; i < SIZE; ++i)
         {
             for (int j = 0; j < SIZE; ++j)
             {
-                image[i][j] = secondImage[i][j];
+                image[i][j] = secondImage[i][j];//store each pixel in the second image in the original image to save it
             }
         }
     }
@@ -290,14 +289,14 @@ void rotateImage(int angle)
         {
             for (int j = 0; j < SIZE; ++j)
             {
-                secondImage[255 - i][255 - j] = image[i][j];
+                secondImage[255 - i][255 - j] = image[i][j];// to rotate the image 180 degree store the first row in the original image to the last row in the second image 
             }
         }
         for (int i = 0; i < SIZE; ++i)
         {
             for (int j = 0; j < SIZE; ++j)
             {
-                image[i][j] = secondImage[i][j];
+                image[i][j] = secondImage[i][j];//store each pixel in the second image in the original image to save it
             }
         }
     }
@@ -307,14 +306,14 @@ void rotateImage(int angle)
         {
             for (int j = 0; j < SIZE; ++j)
             {
-                secondImage[255 - j][i] = image[i][j];
+                secondImage[255 - j][i] = image[i][j];//to rotate the image 270 degree store the first row in the original image to the first coloumn in the second image
             }
         }
         for (int i = 0; i < SIZE; ++i)
         {
             for (int j = 0; j < SIZE; ++j)
             {
-                image[i][j] = secondImage[i][j];
+                image[i][j] = secondImage[i][j];//store each pixel in the second image in the original image to save it
             }
         }
     }
@@ -324,13 +323,13 @@ void detectImageEdges()
 {
     for (int i = 0; i < SIZE - 1; i++)
     {
-        for (int j = 0; j < SIZE - 1; j++)
+        for (int j = 0; j < SIZE - 1; j++)//if pixel + the pixel after it or the pixel under it greater than 40 make this pixel black 
         {
             if ((abs(image[i][j] - image[i][j + 1]) >= 40) || (abs(image[i][j] - image[i + 1][j]) >= 40))
             {
                 image[i][j] = 0;
             }
-            else
+            else//if it is less than 40 make this pixel white
             {
                 image[i][j] = 255;
             }
@@ -409,9 +408,14 @@ void enlargeImage()
     }
 }
 
-void shrinkImage(int dimension)
+void shrinkImage()
 {
-    if (dimension == 1 / 2)
+    int dimension;
+    cout << "1.shrink image to 1/2\n2.sheink image to 1/3\n3.shrink image to 1/4\n";
+    cout << "please choose (1 - 2 - 3): ";
+    cin >> dimension;
+
+    if (dimension == 1 )//shrink image to 1/2
     {
         for (int i = 0; i < SIZE; i++)
         {
@@ -424,18 +428,18 @@ void shrinkImage(int dimension)
         {
             for (int j = SIZE / 2; j < SIZE; j++)
             {
-                image[i][j] = 255;
+                image[i][j] = 255;//make the remaining image = white 
             }
         }
         for (int i = SIZE / 2; i < SIZE; i++)
         {
             for (int j = 0; j < SIZE; j++)
             {
-                image[i][j] = 255;
+                image[i][j] = 255;//make the remaining image = white 
             }
         }
     }
-    if (dimension == 1 / 3)
+    if (dimension == 2 )//shrink image to 1/3
     {
         for (int i = 0; i < SIZE; i++)
         {
@@ -448,18 +452,18 @@ void shrinkImage(int dimension)
         {
             for (int j = SIZE / 3; j < SIZE; j++)
             {
-                image[i][j] = 255;
+                image[i][j] = 255;//make the remaining image = white 
             }
         }
         for (int i = SIZE / 3; i < SIZE; i++)
         {
             for (int j = 0; j < SIZE; j++)
             {
-                image[i][j] = 255;
+                image[i][j] = 255;//make the remaining image = white 
             }
         }
     }
-    if (dimension == 1 / 4)
+    if (dimension == 3 )//shrink image to 1/4
     {
         for (int i = 0; i < SIZE; i++)
         {
@@ -472,14 +476,14 @@ void shrinkImage(int dimension)
         {
             for (int j = SIZE / 4; j < SIZE; j++)
             {
-                image[i][j] = 255;
+                image[i][j] = 255;//make the remaining image = white 
             }
         }
         for (int i = SIZE / 4; i < SIZE; i++)
         {
             for (int j = 0; j < SIZE; j++)
             {
-                image[i][j] = 255;
+                image[i][j] = 255;//make the remaining image = white 
             }
         }
     }
@@ -609,21 +613,21 @@ void shuffleImage()
             {
                 for (int j = 0; j < (SIZE / 2); j++)
                 {
-                    if (quartersArrange[0] == '1')
+                    if (quartersArrange[0] == '1')//check the first num in quarterArrange
                     {
-                        image[i][j] = firstQuarter[i][j];
+                        image[i][j] = firstQuarter[i][j];//store in the first quarter of the image the first quarter  
                     }
                     else if (quartersArrange[0] == '2')
                     {
-                        image[i][j] = secondQuarter[i][j];
+                        image[i][j] = secondQuarter[i][j];//store in the first quarter of the image the second quarter  
                     }
                     else if (quartersArrange[0] == '3')
                     {
-                        image[i][j] = thirdQuarter[i][j];
+                        image[i][j] = thirdQuarter[i][j];//store in the first quarter of the image the third quarter  
                     }
                     else if (quartersArrange[0] == '4')
                     {
-                        image[i][j] = fourthQuarter[i][j];
+                        image[i][j] = fourthQuarter[i][j];//store in the first quarter of the image the fourth quarter 
                     }
                 }
             }
@@ -635,9 +639,9 @@ void shuffleImage()
             {
                 for (int j = 0; j < (SIZE / 2); j++)
                 {
-                    if (quartersArrange[1] == '1')
+                    if (quartersArrange[1] == '1')//check the second num in quarterArrange
                     {
-                        image[i][j + 128] = firstQuarter[i][j];
+                        image[i][j + 128] = firstQuarter[i][j];//store in the second quarter of the image the first quarter 
                     }
                     else if (quartersArrange[1] == '2')
                     {
@@ -661,9 +665,9 @@ void shuffleImage()
             {
                 for (int j = 0; j < (SIZE / 2); j++)
                 {
-                    if (quartersArrange[2] == '1')
+                    if (quartersArrange[2] == '1')//check the third num in quarterArrange
                     {
-                        image[i + 128][j] = firstQuarter[i][j];
+                        image[i + 128][j] = firstQuarter[i][j];//store in the third quarter of the image the first quarter 
                     }
                     else if (quartersArrange[2] == '2')
                     {
@@ -687,9 +691,9 @@ void shuffleImage()
             {
                 for (int j = 0; j < (SIZE / 2); j++)
                 {
-                    if (quartersArrange[3] == '1')
+                    if (quartersArrange[3] == '1')//check the fourth num in quarterArrange
                     {
-                        image[i + 128][j + 128] = firstQuarter[i][j];
+                        image[i + 128][j + 128] = firstQuarter[i][j];//store in the fourth quarter of the image the first quarter 
                     }
                     else if (quartersArrange[3] == '2')
                     {
@@ -722,13 +726,13 @@ void blur()
         }
     }
 
-    avg /= SIZE * SIZE;
+    avg /= SIZE * SIZE;//calculate the avrage colour of the image
 
     for (int i = 0; i < 258; ++i)
     {
         for (int j = 0; j < 258; ++j)
         {
-            space[i][j] = avg;
+            space[i][j] = avg;//make each pixel = avg 
         }
     }
     for (int i = 1; i < 258; ++i)
