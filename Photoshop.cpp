@@ -23,14 +23,13 @@ void saveImage();
 void blackWhite();
 void invert();
 void mergeImages();
-void flip(char choice);
 void flipImage();
 void darkenLighten(char character);
 void rotateImage(int angle);
 void detectImageEdges();
-void enlargeImage(int quarter);
+void enlargeImage();
 void shrinkImage(int dimension);
-void mirrorImage(int side);
+void mirrorImage();
 void shuffleImage();
 void blur();
 
@@ -61,11 +60,7 @@ int main()
             break;
 
         case '4':
-            // char flipChoice;
             cout << "You're Now Using The Flip Filter" << endl;
-            // cout << "Do you want to Flip (h)orizontally or (v)ertically ? ";
-            // cin >> flipChoice;
-            // flip(flipChoice);
             flipImage();
             break;
 
@@ -93,11 +88,8 @@ int main()
             break;
 
         case '8':
-            int quarter;
             cout << "You're Now Using The Enlarge Filter" << endl;
-            cout << "1.first quarter\n2.second quarter\n3.third quarter\n4.fourth quarter\npls choose the quarter you want to enlarge: ";
-            cin >> quarter;
-            enlargeImage(quarter);
+            enlargeImage();
             break;
 
         case '9':
@@ -109,11 +101,8 @@ int main()
             break;
 
         case 'a':
-            int side;
             cout << "You're Now Using The Mirror Filter" << endl;
-            cout << "do you want to mirror the \n1.Right half\n2.Left half\n3.Upper half\n4.Lowe half" << endl;
-            cin >> side;
-            mirrorImage(side);
+            mirrorImage();
             break;
 
         case 'b':
@@ -216,10 +205,10 @@ void invert()
 {
     for (int i = 0; i < SIZE; i++)
     {
-        for (int j = 0; j < SIZE; j++)
+        for (int j = 0; j < SIZE; j++)//loop for each pixel in the image
         {
 
-            image[i][j] = 255 - image[i][j];
+            image[i][j] = 255 - image[i][j]; //make the new color of this pixel = 255 - the color of this pixel
         }
     }
 }
@@ -244,42 +233,6 @@ void mergeImages()
     }
 }
 
-void flip(char choice)
-{
-    if (choice == 'v')
-    {
-
-        for (int i = 0; i < SIZE; i++)
-        {
-            for (int j = 0; j < SIZE; j++)
-            {
-
-                secondImage[255 - i][j] = image[i][j];
-            }
-        }
-    }
-
-    else if (choice == 'h')
-    {
-
-        for (int i = 0; i < SIZE; i++)
-        {
-            for (int j = 0; j < SIZE; j++)
-            {
-
-                secondImage[i][255 - j] = image[i][j];
-            }
-        }
-    }
-    for (int i = 0; i < SIZE; i++)
-    {
-        for (int j = 0; j < SIZE; j++)
-        {
-
-            image[i][j] = secondImage[i][j];
-        }
-    }
-}
 
 void darkenLighten(char character)
 {
@@ -385,15 +338,19 @@ void detectImageEdges()
     }
 }
 
-void enlargeImage(int quarter)
+void enlargeImage()
 {
+    int quarter;
+    cout << "1.first quarter\n2.second quarter\n3.third quarter\n4.fourth quarter\npls choose the quarter you want to enlarge: ";
+    cin >> quarter;
+
     if (quarter == 1)
     {
         for (int i = 0; (i < SIZE / 2); i++)
         {
-            for (int j = 0; j < (SIZE / 2); j++)
+            for (int j = 0; j < (SIZE / 2); j++)//loop for each pixel in the first quarter
             {
-                int pixel = image[i][j];
+                int pixel = image[i][j];//store each pixel in second image in four pixel
                 secondImage[i + i][j + j] = pixel;
                 secondImage[i + i][j + j + 1] = pixel;
                 secondImage[i + i + 1][j + j] = pixel;
@@ -405,9 +362,9 @@ void enlargeImage(int quarter)
     {
         for (int i = 0; i < (SIZE / 2); i++)
         {
-            for (int j = 127; j < SIZE; j++)
+            for (int j = 127; j < SIZE; j++)//loop for each pixel in the second quarter
             {
-                int pixel = image[i][j];
+                int pixel = image[i][j];//store each pixel in second image in four pixel
                 secondImage[i + i][j + j] = pixel;
                 secondImage[i + i][j + j + 1] = pixel;
                 secondImage[i + i + 1][j + j] = pixel;
@@ -419,9 +376,9 @@ void enlargeImage(int quarter)
     {
         for (int i = 127; i < SIZE; i++)
         {
-            for (int j = 0; j < (SIZE / 2); j++)
+            for (int j = 0; j < (SIZE / 2); j++)//loop for each pixel in the third quarter
             {
-                int pixel = image[i][j];
+                int pixel = image[i][j];//store each pixel in second image in four pixel
                 secondImage[i * 2 - 127 * 2][j + j] = pixel;
                 secondImage[i * 2 - 127 * 2][j + j + 1] = pixel;
                 secondImage[i * 2 - 127 * 2 + 1][j + j] = pixel;
@@ -433,9 +390,9 @@ void enlargeImage(int quarter)
     {
         for (int i = 127; i < SIZE; i++)
         {
-            for (int j = 127; j < SIZE; j++)
+            for (int j = 127; j < SIZE; j++)//loop for each pixel in the fourth quarter
             {
-                int pixel = image[i][j];
+                int pixel = image[i][j];//store each pixel in second image in four pixel
                 secondImage[i * 2 - 127 * 2][j * 2 - 127 * 2] = pixel;
                 secondImage[i * 2 - 127 * 2][j * 2 - 127 * 2 + 1] = pixel;
                 secondImage[i * 2 - 127 * 2 + 1][j * 2 - 127 * 2] = pixel;
@@ -445,7 +402,7 @@ void enlargeImage(int quarter)
     }
     for (int i = 0; i < SIZE; i++)
     {
-        for (int j = 0; j < SIZE; j++)
+        for (int j = 0; j < SIZE; j++)//make the original image = the second image to save the original image
         {
             image[i][j] = secondImage[i][j];
         }
@@ -528,17 +485,55 @@ void shrinkImage(int dimension)
     }
 }
 
-void mirrorImage(int side)
+void flipImage()
 {
+    int choice;
+    cout << "do yo want to flip the photo \n1.horizontal\n2.vertical\n";
+    cin >> choice;
+    if (choice == 1)
+    {
+        for (int i = 0; i < SIZE; i++)
+        {
+            for (int j = 0; j < SIZE; j++)//loop for each pixel in the image
+            {
+                secondImage[i][j] = image[255 - i][j];//make the first row in the second image = last row in the original image
+            }
+        }
+    }
+    else
+    {
+        for (int i = 0; i < SIZE; i++)
+        {
+            for (int j = 0; j < SIZE; j++)//loop for each pixel in the image
+            {
+                secondImage[j][i] = image[j][255 - i];//make the first column in the second image = last column in the original image
+            }
+        }
+    }
+    for (int i = 0; i < SIZE; i++)//make the original image = the second image to save the original image
+    {
+        for (int j = 0; j < SIZE; j++)
+        {
+            image[i][j] = secondImage[i][j];
+        }
+    }
+}
+
+
+void mirrorImage()
+{
+    int side;
+    cout << "do you want to mirror the \n1.Right half\n2.Left half\n3.Upper half\n4.Lowe half" << endl;
+    cin >> side;
     if (side == 1)
     {
         for (int i = 0; i < SIZE; i++)
         {
-            for (int j = 0; j < SIZE; j++)
+            for (int j = 0; j < SIZE; j++)//loop for left half of the image
             {
                 if (j < 128)
                 {
-                    image[i][j] = image[i][255 - j];
+                    image[i][j] = image[i][255 - j];//make the left half of the row = right half of the row
                 }
             }
         }
@@ -547,11 +542,11 @@ void mirrorImage(int side)
     {
         for (int i = 0; i < SIZE; i++)
         {
-            for (int j = 0; j < SIZE; j++)
+            for (int j = 0; j < SIZE; j++)//loop for right half of the image
             {
                 if (j < 128)
                 {
-                    image[i][255 - j] = image[i][j];
+                    image[i][255 - j] = image[i][j];//make the right half of the row = left half of the row
                 }
             }
         }
@@ -560,11 +555,11 @@ void mirrorImage(int side)
     {
         for (int i = 0; i < SIZE; i++)
         {
-            for (int j = 0; j < SIZE; j++)
+            for (int j = 0; j < SIZE; j++)//loop for lower half of the image
             {
                 if (j < 128)
                 {
-                    image[255 - j][i] = image[j][i];
+                    image[255 - j][i] = image[j][i];//make the lower half of the column = upper half of the column 
                 }
             }
         }
@@ -573,11 +568,11 @@ void mirrorImage(int side)
     {
         for (int i = 0; i < SIZE; i++)
         {
-            for (int j = 0; j < SIZE; j++)
+            for (int j = 0; j < SIZE; j++)//loop for lower half of the image
             {
                 if (j < 128)
                 {
-                    image[j][i] = image[255 - j][i];
+                    image[j][i] = image[255 - j][i];//make the upper half of the column = lower half of the column
                 }
             }
         }
@@ -761,40 +756,6 @@ void blur()
         {
 
             image[i - 1][j - 1] = space[i][j];
-        }
-    }
-}
-
-void flipImage()
-{
-    int choice;
-    cout << "do yo want to flip the photo \n1.horizontal\n2.vertical\n";
-    cin >> choice;
-    if (choice == 1)
-    {
-        for (int i = 0; i < SIZE; i++)
-        {
-            for (int j = 0; j < SIZE; j++)
-            {
-                secondImage[i][j] = image[255 - i][j];
-            }
-        }
-    }
-    else
-    {
-        for (int i = 0; i < SIZE; i++)
-        {
-            for (int j = 0; j < SIZE; j++)
-            {
-                secondImage[j][i] = image[j][255 - i];
-            }
-        }
-    }
-    for (int i = 0; i < SIZE; i++)
-    {
-        for (int j = 0; j < SIZE; j++)
-        {
-            image[i][j] = secondImage[i][j];
         }
     }
 }
