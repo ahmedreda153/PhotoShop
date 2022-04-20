@@ -1,3 +1,12 @@
+// FCAI - Programming 1 - 2022 - Assignment 3
+// Program Name: Photoshop
+// Program Description: Apply filters on RGB (bmp) photos
+// Last Modification Date: 20/4/2022
+// First author - ID : Salma Mohammed Mahmoud / 20210161
+// Second author - ID : Mohamed Ehab Tawfik / 20210331
+// Third author - ID : Ahmed Reda Elsayed / 20210018
+// Under The Supervision of: Dr. Mohamed El-Ramly
+
 #include <iostream>
 #include <fstream>
 #include <cstring>
@@ -9,18 +18,26 @@ unsigned char image[SIZE][SIZE][RGB];
 unsigned char secondImage[SIZE][SIZE][RGB];
 
 void Menu();
-void loudImage();
+void loadImage();
 void saveImage();
+void blackWhite();
 void invert();
+void mergeImages();
+void darkenLighten();
 void enlargeImage();
 void mirrorImage();
 void shrinkImage();
 void shuffleImage();
+void flipImage();
+void rotateImage();
+void detectImageEdges();
+void blur();
+
 
 int main()
 {
     char choice;
-    loudImage();
+    loadImage();
     while (true)
     {
         Menu();
@@ -29,6 +46,7 @@ int main()
         {
         case '1':
             cout << "You're Now Using The Black and White Filter" << endl;
+            blackWhite();
             break;
 
         case '2':
@@ -38,27 +56,27 @@ int main()
 
         case '3':
             cout << "You're Now Using The Merge Filter" << endl;
-
+            mergeImages();
             break;
 
         case '4':
             cout << "You're Now Using The Flip Filter" << endl;
-
+            flipImage();
             break;
 
         case '5':
             cout << "You're Now Using The Darken and Lighten Filter" << endl;
-
+            darkenLighten();
             break;
 
         case '6':
             cout << "You're Now Using The rotate Filter" << endl;
-
+            rotateImage();
             break;
 
         case '7':
             cout << "You're Now Using The Detect Image Edges Filter" << endl;
-
+            detectImageEdges();
             break;
 
         case '8':
@@ -83,6 +101,7 @@ int main()
 
         case 'c':
             cout << "You're Now Using The Blur Filter" << endl;
+            blur();
             break;
 
         case 's':
@@ -92,7 +111,7 @@ int main()
 
         case 'l':
             cout << "u can load another image and apply filters on it after save the first" << endl;
-
+            loadImage();
             break;
 
         case '0':
@@ -109,7 +128,7 @@ void Menu()
     cout << "\nPlease select a filter to apply or 0 to exit the program: ";
 }
 
-void loudImage()
+void loadImage()
 {
     char imageFileName[100];
 
@@ -144,6 +163,52 @@ void invert()
             for (int k = 0; k < RGB; k++)
             {
                 image[i][j][k] = 255 - image[i][j][k];
+            }
+        }
+    }
+}
+
+void flipImage()
+{
+    int choice;
+    cout << "do yo want to flip the photo \n1.horizontal\n2.vertical\n";
+    cin >> choice;
+    if (choice == 1)
+    {
+        for (int i = 0; i < SIZE; i++)
+        {
+            for (int j = 0; j < SIZE; j++) // loop for each pixel in the image
+            {
+                for (int k = 0; k < RGB; k++)
+                {
+
+                    secondImage[i][j][k] = image[255 - i][j][k]; // make the first row in the second image = last row in the original image
+                }
+            }
+        }
+    }
+    else
+    {
+        for (int i = 0; i < SIZE; i++)
+        {
+            for (int j = 0; j < SIZE; j++) // loop for each pixel in the image
+            {
+                for (int k = 0; k < RGB; k++)
+                {
+
+                    secondImage[j][i][k] = image[j][255 - i][k]; // make the first column in the second image = last column in the original image
+                }
+            }
+        }
+    }
+    for (int i = 0; i < SIZE; i++) // make the original image = the second image to save the original image
+    {
+        for (int j = 0; j < SIZE; j++)
+        {
+            for (int k = 0; k < RGB; k++)
+            {
+
+                image[i][j][k] = secondImage[i][j][k];
             }
         }
     }
@@ -559,4 +624,27 @@ void shuffleImage()
             count++;
         }
     }
+}
+void blackWhite()
+{
+}
+
+void mergeImages()
+{
+}
+
+void darkenLighten()
+{
+}
+
+void rotateImage()
+{
+}
+
+void detectImageEdges()
+{
+}
+
+void blur()
+{
 }
