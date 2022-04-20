@@ -156,6 +156,49 @@ void displayMenu()
 
 void blackWhite()
 {
+
+    long avg = 0;
+    int temp;
+    int rgb;
+
+    for (int i = 0; i < SIZE; i++)
+    {
+        for (int j = 0; j < SIZE; j++)
+        {
+            for(int k = 0; k < RGB; k++){
+                avg += image[i][j][k];
+            }
+
+        }
+    }
+
+    avg /= SIZE*SIZE*RGB;
+
+    cout << "The Average is: " << avg << endl;
+
+    for (int i = 0; i < SIZE; i++)
+    {
+        for (int j = 0; j < SIZE; j++)
+        {
+            for (int k = 0; k < RGB; k++){
+                temp += image[i][j][k];
+                rgb = k;
+            }
+            temp /= 3;
+            if (temp >= avg){
+                image[i][j][rgb] = 255;
+                image[i][j][rgb - 1] = 255;
+                image[i][j][rgb - 2] = 255;
+            }
+            else {
+                image[i][j][rgb] = 0;
+                image[i][j][rgb - 1] = 0;
+                image[i][j][rgb - 2] = 0;
+            }
+            temp =0;
+            }
+        }
+
 }
 
 void invert()
