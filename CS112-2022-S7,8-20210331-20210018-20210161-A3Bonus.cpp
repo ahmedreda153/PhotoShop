@@ -1,7 +1,7 @@
 // FCAI - Programming 1 - 2022 - Assignment 3
 // Program Name: Photoshop
 // Program Description: Apply filters on RGB (bmp) photos
-// Last Modification Date: 20/4/2022
+// Last Modification Date: 04/4/2022
 // First author - ID : Salma Mohammed Mahmoud / 20210161
 // Second author - ID : Mohamed Ehab Tawfik / 20210331
 // Third author - ID : Ahmed Reda Elsayed / 20210018
@@ -17,22 +17,21 @@ using namespace std;
 unsigned char image[SIZE][SIZE][RGB];
 unsigned char secondImage[SIZE][SIZE][RGB];
 
-void Menu();
+void displayMenu();
 void loadImage();
 void saveImage();
 void blackWhite();
 void invert();
 void mergeImages();
-void darkenLighten();
-void enlargeImage();
-void mirrorImage();
-void shrinkImage();
-void shuffleImage();
 void flipImage();
+void darkenLighten();
 void rotateImage();
 void detectImageEdges();
+void enlargeImage();
+void shrinkImage();
+void mirrorImage();
+void shuffleImage();
 void blur();
-
 
 int main()
 {
@@ -40,8 +39,9 @@ int main()
     loadImage();
     while (true)
     {
-        Menu();
+        displayMenu();
         cin >> choice;
+
         switch (choice)
         {
         case '1':
@@ -121,13 +121,6 @@ int main()
     }
 }
 
-void Menu()
-{
-    cout << "\n1-Black & White Filter\n2-Invert Filter\n3-Merge Filter\n4-Flip Image\n5-Darken and Lighten Image\n6-rotate Image\n7-Detect Image Edges\n8-Enlarge Image" << endl;
-    cout << "9-Shrink Image\na-Mirror 1/2 Image\nb-Shuffle Image\nc-Blur Image\ns-Save The Image to a File\nl-Load another image after save the first\n0-Exit" << endl;
-    cout << "\nPlease select a filter to apply or 0 to exit the program: ";
-}
-
 void loadImage()
 {
     char imageFileName[100];
@@ -154,6 +147,62 @@ void saveImage()
     writeRGBBMP(imageFileName, image);
 }
 
+void displayMenu()
+{
+    cout << "\n1-Black & White Filter\n2-Invert Filter\n3-Merge Filter\n4-Flip Image\n5-Darken and Lighten Image\n6-rotate Image\n7-Detect Image Edges\n8-Enlarge Image" << endl;
+    cout << "9-Shrink Image\na-Miror 1/2 Image\nb-Shuffle Image\nc-Blur Image\ns-Save The Image to a File\nl-Load another image after save the first\n0-Exit" << endl;
+    cout << "\nPlease select a filter to apply or 0 to exit the program: ";
+}
+
+void blackWhite()
+{
+
+    long avg = 0;
+    int temp;
+    int rgb;
+
+    for (int i = 0; i < SIZE; i++)
+    {
+        for (int j = 0; j < SIZE; j++)
+        {
+            for (int k = 0; k < RGB; k++)
+            {
+                avg += image[i][j][k];
+            }
+        }
+    }
+
+    avg /= SIZE * SIZE * RGB;
+
+    cout << "The Average is: " << avg << endl;
+
+    for (int i = 0; i < SIZE; i++)
+    {
+        for (int j = 0; j < SIZE; j++)
+        {
+            for (int k = 0; k < RGB; k++)
+            {
+                temp += image[i][j][k];
+                rgb = k;
+            }
+            temp /= 3;
+            if (temp >= avg)
+            {
+                image[i][j][rgb] = 255;
+                image[i][j][rgb - 1] = 255;
+                image[i][j][rgb - 2] = 255;
+            }
+            else
+            {
+                image[i][j][rgb] = 0;
+                image[i][j][rgb - 1] = 0;
+                image[i][j][rgb - 2] = 0;
+            }
+            temp = 0;
+        }
+    }
+}
+
 void invert()
 {
     for (int i = 0; i < SIZE; i++)
@@ -168,6 +217,32 @@ void invert()
     }
 }
 
+void mergeImages()
+{
+    for (int i = 0; i < SIZE; i++)
+    {
+        for (int j = 0; j < SIZE; j++)
+        {
+            for (int k = 0; k < RGB; k++)
+            {
+                secondImage[i][j][k] = image[i][j][k];
+            }
+        }
+    }
+    cout << "Now Choose The Second Image: " << endl;
+    loadImage();
+    for (int i = 0; i < SIZE; i++)
+    {
+        for (int j = 0; j < SIZE; j++)
+        {
+            for (int k = 0; k < RGB; k++)
+            {
+                image[i][j][k] = (secondImage[i][j][k] + image[i][j][k]) / 2;
+            }
+        }
+    }
+}
+
 void flipImage()
 {
     int choice;
@@ -177,12 +252,12 @@ void flipImage()
     {
         for (int i = 0; i < SIZE; i++)
         {
-            for (int j = 0; j < SIZE; j++) // loop for each pixel in the image
+            for (int j = 0; j < SIZE; j++)
             {
                 for (int k = 0; k < RGB; k++)
                 {
 
-                    secondImage[i][j][k] = image[255 - i][j][k]; // make the first row in the second image = last row in the original image
+                    secondImage[i][255 - j][k] = image[i][j][k];
                 }
             }
         }
@@ -191,17 +266,16 @@ void flipImage()
     {
         for (int i = 0; i < SIZE; i++)
         {
-            for (int j = 0; j < SIZE; j++) // loop for each pixel in the image
+            for (int j = 0; j < SIZE; j++)
             {
                 for (int k = 0; k < RGB; k++)
                 {
-
-                    secondImage[j][i][k] = image[j][255 - i][k]; // make the first column in the second image = last column in the original image
+                    secondImage[255 - i][j][k] = image[i][j][k];
                 }
             }
         }
     }
-    for (int i = 0; i < SIZE; i++) // make the original image = the second image to save the original image
+    for (int i = 0; i < SIZE; i++)
     {
         for (int j = 0; j < SIZE; j++)
         {
@@ -209,6 +283,184 @@ void flipImage()
             {
 
                 image[i][j][k] = secondImage[i][j][k];
+            }
+        }
+    }
+}
+
+void darkenLighten()
+{
+    char character;
+    cout << "choose (d) if u want to darken the image" << endl;
+    cout << "choose (l) if u want to lighten the image" << endl;
+    cout << "choose: ";
+    cin >> character;
+    if (character == 'd')
+    {
+        for (int i = 0; i < SIZE; i++)
+        {
+            for (int j = 0; j < SIZE; j++)
+            {
+                for (int k = 0; k < RGB; k++)
+                {
+                    image[i][j][k] = image[i][j][k] / 2;
+                }
+            }
+        }
+    }
+    else if (character == 'l')
+    {
+        int num = 0;
+        int i, j;
+        for (int i = 0; i < SIZE; i++)
+        {
+            for (int j = 0; j < SIZE; j++)
+            {
+                for (int k = 0; k < RGB; k++)
+                {
+                    if ((image[i][j][k] + (image[i][j][k] / 2)) > 255)
+                    {
+                        image[i][j][k] = 255;
+                    }
+                    else
+                    {
+                        image[i][j][k] = image[i][j][k] + (image[i][j][k] / 2);
+                    }
+                }
+            }
+        }
+    }
+    else
+        cout << "ERROR INVALID CHOOSE";
+}
+
+void rotateImage()
+{
+    int angle;
+    cout << "Please Choose the angle (90 - 180 - 270):  ";
+    cin >> angle;
+
+    if (angle == 270)
+    {
+        for (int i = 0; i < SIZE; ++i)
+        {
+            for (int j = 0; j < SIZE; ++j)
+            {
+                for (int k = 0; k < RGB; k++)
+                {
+                    secondImage[255 - j][i][k] = image[i][j][k];
+                }
+            }
+        }
+        for (int i = 0; i < SIZE; ++i)
+        {
+            for (int j = 0; j < SIZE; ++j)
+            {
+                for (int k = 0; k < RGB; k++)
+                {
+                    image[i][j][k] = secondImage[i][j][k];
+                }
+            }
+        }
+    }
+    if (angle == 180)
+    {
+        for (int i = 0; i < SIZE; ++i)
+        {
+            for (int j = 0; j < SIZE; ++j)
+            {
+                for (int k = 0; k < RGB; k++)
+                {
+                    secondImage[255 - i][255 - j][k] = image[i][j][k];
+                }
+            }
+        }
+        for (int i = 0; i < SIZE; ++i)
+        {
+            for (int j = 0; j < SIZE; ++j)
+            {
+                for (int k = 0; k < RGB; k++)
+                {
+                    image[i][j][k] = secondImage[i][j][k];
+                }
+            }
+        }
+    }
+    if (angle == 90)
+    {
+        for (int i = 0; i < SIZE; ++i)
+        {
+            for (int j = 0; j < SIZE; ++j)
+            {
+                for (int k = 0; k < RGB; k++)
+                {
+                    secondImage[255 - j][i][k] = image[i][j][k];
+                }
+            }
+        }
+        for (int i = 0; i < SIZE; ++i)
+        {
+            for (int j = 0; j < SIZE; ++j)
+            {
+                for (int k = 0; k < RGB; k++)
+                {
+                    image[i][j][k] = secondImage[i][j][k];
+                }
+            }
+        }
+    }
+}
+
+void detectImageEdges()
+{
+    unsigned char gsImage[SIZE][SIZE];
+    int temp;
+
+    for (int i = 0; i < SIZE; i++)
+    {
+        for (int j = 0; j < SIZE; j++)
+        {
+            for (int k = 0; k < RGB; k++)
+            {
+                temp += image[i][j][k];
+            }
+            temp /= 3;
+            gsImage[i][j] = temp;
+            temp = 0;
+        }
+    }
+
+    for (int i = 0; i < SIZE - 1; i++)
+    {
+        for (int j = 0; j < SIZE - 1; j++)
+        {
+            if ((abs(gsImage[i][j] - gsImage[i][j + 1]) >= 40) || (abs(gsImage[i][j] - gsImage[i + 1][j]) >= 40))
+            {
+                gsImage[i][j] = 0;
+            }
+            else
+            {
+                gsImage[i][j] = 255;
+            }
+        }
+    }
+    for (int i = 0; i < SIZE; i++)
+    {
+        for (int j = 0; j < SIZE; j++)
+        {
+            if (gsImage[i][j] == 0)
+            {
+                for (int k = 0; k < RGB; k++)
+                {
+                    image[i][j][k] = 0;
+                }
+            }
+            else
+            {
+                for (int k = 0; k < RGB; k++)
+                {
+                    image[i][j][k] = 255;
+                }
             }
         }
     }
@@ -625,26 +877,59 @@ void shuffleImage()
         }
     }
 }
-void blackWhite()
-{
-}
-
-void mergeImages()
-{
-}
-
-void darkenLighten()
-{
-}
-
-void rotateImage()
-{
-}
-
-void detectImageEdges()
-{
-}
 
 void blur()
 {
+    unsigned char space[SIZE + 2][SIZE + 2][RGB];
+
+    for (int i = 1; i < 258; ++i)
+    {
+        for (int j = 1; j < 258; ++j)
+        {
+            for (int k = 0; k < RGB; k++)
+            {
+                space[i][j][k] = image[i - 1][j - 1][k];
+            }
+        }
+    }
+    for (int i = 1; i < 258; ++i)
+    {
+        for (int j = 1; j < 258; ++j)
+        {
+            for (int k = 0; k < RGB; k++)
+            {
+                int kernelR, kernelG, kernelB;
+                if (k == 0)
+                {
+                    kernelR = space[i - 1][j - 1][k] + space[i - 1][j][k] + space[i - 1][j + 1][k] + space[i][j - 1][k] + space[i][j][k] + space[i][j + 1][k] + space[i + 1][j - 1][k] + space[i + 1][j][k] + space[i][j + 1][k];
+                    kernelR /= 9;
+                    space[i][j][k] = kernelR;
+                }
+                if (k == 1)
+                {
+
+                    kernelG = space[i - 1][j - 1][k] + space[i - 1][j][k] + space[i - 1][j + 1][k] + space[i][j - 1][k] + space[i][j][k] + space[i][j + 1][k] + space[i + 1][j - 1][k] + space[i + 1][j][k] + space[i][j + 1][k];
+                    kernelG /= 9;
+                    space[i][j][k] = kernelG;
+                }
+                if (k == 2)
+                {
+
+                    kernelB = space[i - 1][j - 1][k] + space[i - 1][j][k] + space[i - 1][j + 1][k] + space[i][j - 1][k] + space[i][j][k] + space[i][j + 1][k] + space[i + 1][j - 1][k] + space[i + 1][j][k] + space[i][j + 1][k];
+                    kernelB /= 9;
+                    space[i][j][k] = kernelB;
+                }
+            }
+        }
+    }
+    for (int i = 1; i < 258; ++i)
+    {
+        for (int j = 1; j < 258; ++j)
+        {
+            for (int k = 0; k < RGB; k++)
+            {
+                image[i - 1][j - 1][k] = space[i][j][k];
+            }
+        }
+    }
 }

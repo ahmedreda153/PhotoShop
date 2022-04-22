@@ -2,8 +2,8 @@
 // Program Name: Photoshop
 // Program Description: Apply filters on gray scale (bmp) photos
 // Last Modification Date: 04/4/2022
-// First author - ID : Salma Mohamed Mahmoud / 20210161
-// Second author - ID : Mohame Ehab Tawfik / 20210331
+// First author - ID : Salma Mohammed Mahmoud / 20210161
+// Second author - ID : Mohamed Ehab Tawfik / 20210331
 // Third author - ID : Ahmed Reda Elsayed / 20210018
 // Under The Supervision of: Dr. Mohamed El-Ramly
 
@@ -299,7 +299,7 @@ void rotateImage()
     cout << "Please Choose the angle (90 - 180 - 270):  ";
     cin >> angle;
 
-    if (angle == 90)
+    if (angle == 270)
     {
         for (int i = 0; i < SIZE; ++i)
         {
@@ -333,7 +333,7 @@ void rotateImage()
             }
         }
     }
-    if (angle == 270)
+    if (angle == 90)
     {
         for (int i = 0; i < SIZE; ++i)
         {
@@ -714,7 +714,7 @@ void shuffleImage()
 
 void blur()
 {
-    unsigned char space[258][258];
+    unsigned char space[SIZE + 2][SIZE + 2];
     long avg;
     for (int i = 0; i < SIZE; ++i)
     {
