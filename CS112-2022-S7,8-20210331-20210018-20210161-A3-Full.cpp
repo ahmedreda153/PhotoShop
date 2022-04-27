@@ -35,7 +35,7 @@ void blur();
 
 int main()
 {
-    char choice;
+    char choice;// alooo
     loadImage();
     while (true)
     {
